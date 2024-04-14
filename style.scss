@@ -1,0 +1,121 @@
+// variable
+$primary-color: #578a34;
+// mixin
+@mixin location($x, $y) {
+  top: $y;
+  left: $x;
+}
+* {
+padding: 0;
+margin: 0;
+box-sizing: border-box;
+}
+
+body {
+  background-color: $primary-color;
+}
+i {
+  color: white;
+  cursor: pointer;
+}
+.wrapper {
+  position: absolute;
+  display: flex;
+  height: 100vh;
+  @include location(50%, 50%);
+  transform: translate(-50%, -50%);
+  padding: 80px 200px;
+  .music {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+    display: flex;
+    gap: 20px;
+  }
+  .score {
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #level {
+    width: 100px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  #level:hover {
+    border-color: #888;
+  }
+
+  #level:focus {
+    outline: 2px solid #007bff;
+  }
+}
+
+.ended {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  transition: all .4s ease-in-out;
+  &--show {
+    display: block;
+  }
+  &__opacity {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: gray;
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__notification {
+    position: absolute;
+    z-index: 10;
+    top: -100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 20px;
+    width: 1000px;
+    padding: 20px;
+    text-align: center;
+    transition: all .25s ease-in-out;
+    &--show {
+      top: 50%;
+
+    }
+  }
+
+  &__button {
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+  }
+
+}
+
+#board {
+  position: relative;
+}
+
+.cell {
+  position: absolute;
+}
+
+.food {
+  background-image: url('assets/apple.png')
+}
+
+.snake {
+  background-image: url('assets/body1.png');
+  background-size: cover;
+}

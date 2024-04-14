@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+<body>
+    <div class="wrapper">
+        <div id="board"></div>
+        <div class="music">
+            <i class="fa-solid fa-music fa-2xl"></i>
+            <i class="fa-solid fa-volume-high fa-2xl"></i>
+        </div>
+        <div class="score">
+            <span>Score:</span>
+            <span id = "score">0</span>
+            <span>|</span>
+            <label for="level">Level</label>
+            <select id="level" name="level">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+            </select>
+        </div>
+    </div>
+    <div class="ended">
+        <div class="ended__opacity"></div>
+        <div class = "ended__notification">
+            <p class="ended__game-over">Game Over</p>
+            <button class="ended__button">New game</button>
+        </div>
+    </div>
+</body>
+<script src="index.js"></script>
+</html>
