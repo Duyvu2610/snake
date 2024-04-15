@@ -64,9 +64,11 @@ i {
   height: 100vh;
   display: none;
   transition: all .4s ease-in-out;
+
   &--show {
     display: block;
   }
+
   &__opacity {
     position: absolute;
     top: 0;
@@ -89,18 +91,76 @@ i {
     padding: 20px;
     text-align: center;
     transition: all .25s ease-in-out;
+    font-size: 1.5em; // Thay đổi kích thước font tùy chỉnh
+
     &--show {
       top: 50%;
-
     }
   }
 
   &__button {
+    &:hover{
+      scale: 1.2;
+    }
+    transition: all .4s ease-in-out;
     padding: 4px 12px;
     border-radius: 4px;
     margin-top: 12px;
+    background-color: #578a34; // Thêm màu nền cho nút tùy chỉnh
+    color: white; // Thêm màu văn bản cho nút tùy chỉnh
+  }
+}
+
+.success {
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  transition: all .4s ease-in-out;
+
+  &--show {
+    display: block;
   }
 
+  &__opacity {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: gray;
+    opacity: 0.3;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__notification {
+    position: absolute;
+    z-index: 10;
+    top: -100px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 20px;
+    width: 1000px;
+    padding: 20px;
+    text-align: center;
+    transition: all .25s ease-in-out;
+    font-size: 1.5em; // Thay đổi kích thước font tùy chỉnh
+
+    &--show {
+      top: 50%;
+    }
+  }
+
+  &__button {
+    &:hover{
+      scale: 1.2;
+    }
+    transition: all .4s ease-in-out;
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-top: 12px;
+    background-color: #578a34; // Thêm màu nền cho nút tùy chỉnh
+    color: white; // Thêm màu văn bản cho nút tùy chỉnh
+  }
 }
 
 #board {
@@ -112,7 +172,7 @@ i {
 }
 
 .food {
-  background-image: url('assets/apple.png')
+  background-image: url('assets/apple.png');
 }
 
 .snake {

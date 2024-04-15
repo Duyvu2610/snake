@@ -41,9 +41,13 @@ let obstacles = [];
 let poison = { x: 0, y: 0 };
 let foods = [];
 let foodIntervalId;
+// Tạo đối tượng Audio
+let eatSound = new Audio('assets/eat.wav');
+let success = false;
 
 
 const newGame = document.querySelector(".ended__button")
+const highLevel = document.querySelector(".success__button")
 const levelSelect = document.getElementById('level');
 
 // Start the game
@@ -98,6 +102,10 @@ window.onload = () => {
     newGame.addEventListener('click', () => {
         restart()
     })
+
+    highLevel.addEventListener('click', () => {
+        restart()
+    })
 };
 
 const gameLoop = () => {
@@ -123,6 +131,7 @@ const gameLoop = () => {
 
 // Clear board and render each time, this avoids memory leak and ensures updated view.
 const render = () => {
+    console.log(snakeDirection)
     // Clear the game board
     initArray = initArray.map(() => Array(initArraySize).fill(0));
     // render obstacles
@@ -239,6 +248,8 @@ const updateSnakePosition = () => {
             foods.splice(i, 1); // Remove the eaten food
             createFood(); // Initialize new foods
             ateFood = true;
+            let soundClone = eatSound.cloneNode();
+            soundClone.play();
             break;
         }
     }
@@ -248,6 +259,11 @@ const updateSnakePosition = () => {
     if (!ateFood) {
         // If the snake didn't eat food, remove the tail
         snake.pop();
+    }
+
+    if (score >= 10) {
+        successPass('You win!')
+        success = true
     }
 
     return true;
@@ -264,7 +280,23 @@ const ended = (notification) => {
     gameOverElement.innerHTML = notification
     endedElement.classList.add("ended--show")
     notificationElement.classList.add("ended__notification--show")
+
+    snakeDirection = null
+    newDirection = null
 }
+const successPass = (notification) => {
+    isGameOver = true;
+    isGameStarted = false;
+
+    const endedElement = document.querySelector(".success")
+    const notificationElement = document.querySelector(".success__notification")
+    const gameOverElement = document.querySelector(".success__game-over")
+
+    gameOverElement.innerHTML = notification
+    endedElement.classList.add("success--show")
+    notificationElement.classList.add("success__notification--show")
+}
+
 
 const restart = () => {
     isGameOver = false;
@@ -277,20 +309,32 @@ const restart = () => {
     ];
 
     score = 0;
-    initFoods();
     snakeDirection = undefined
-
     scoreElement.innerHTML = score;
 
-    const endedElement = document.querySelector(".ended");
-    const notificationElement = document.querySelector(".ended__notification");
-    endedElement.classList.remove("ended--show");
-    notificationElement.classList.remove("ended__notification--show");
+    if (success) {
+        const successElement = document.querySelector(".success");
+        const notificationElement = document.querySelector(".success__notification");
+        successElement.classList.remove("success--show");
+        notificationElement.classList.remove("success__notification--show");
+        if (level < 6) {
+            level++;
+            levelSelect.value = level;
+        }
+        success = false
+    }else {
+        const endedElement = document.querySelector(".ended");
+        const notificationElement = document.querySelector(".ended__notification");
+        endedElement.classList.remove("ended--show");
+        notificationElement.classList.remove("ended__notification--show");
+    }
+
 
     obstacles = [];
     if (level >= 3) {
         initObstacles();
     }
+    initFoods()
     render()
 }
 
