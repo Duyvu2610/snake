@@ -31,6 +31,18 @@ i {
     left: 15px;
     display: flex;
     gap: 20px;
+    .slash {
+      position: absolute;
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      top: -30px;
+      left: 12px;
+      rotate: 111deg;
+      display: none;
+      cursor: pointer;
+      user-select: none;
+    }
   }
   .score {
     color: white;
@@ -91,7 +103,7 @@ i {
     padding: 20px;
     text-align: center;
     transition: all .25s ease-in-out;
-    font-size: 1.5em; // Thay đổi kích thước font tùy chỉnh
+    font-size: 1.5em;
 
     &--show {
       top: 50%;
@@ -106,8 +118,8 @@ i {
     padding: 4px 12px;
     border-radius: 4px;
     margin-top: 12px;
-    background-color: #578a34; // Thêm màu nền cho nút tùy chỉnh
-    color: white; // Thêm màu văn bản cho nút tùy chỉnh
+    background-color: #578a34;
+    color: white;
   }
 }
 
@@ -179,3 +191,165 @@ i {
   background-image: url('assets/body1.png');
   background-size: cover;
 }
+
+.home {
+  background-image: url("assets/1.png");
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  z-index: 10;
+  .btn-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .btn{
+    padding: 10px 20px;
+    border-radius: 4px;
+    background-color: #578a34;
+    color: white;
+    font-size: 1.5em;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: all .3s ease-in-out;
+    &:hover {
+      background-color: #4d7a2b;
+      scale: 1.1;
+    }
+  }
+}
+
+.about {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: 100;
+  top: -100%;
+  transition: all 0.5s ease;
+
+  #close {
+    position: absolute;
+    z-index: 101;
+    width: 30px;
+    height: 30px;
+    top: 30px;
+    right: 20px;
+  }
+}
+
+.profile-page {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 5rem;
+  background: rgba(255,255,255,0.5);
+  .content {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+    margin: auto;;
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);
+
+    &__cover {
+      position: relative;
+    }
+
+    &__bull {
+      display: none;
+      height: 12rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    &__avatar {
+      width: 12rem;
+      height: 12rem;
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      z-index: 2;
+      transform: translate(-50%, 50%);
+      background: #8f6ed5 url("https://image.freepik.com/free-photo/friendly-brunette-looking-camera_23-2147774849.jpg") center center no-repeat;
+      background-size: cover;
+      border-radius: 50%;
+      box-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-radius: 50%;
+      }
+    }
+
+    &__title {
+      margin-top: 4.5rem;
+      text-align: center;
+      order: 1;
+
+      h1 {
+        margin-bottom: 0.1rem;
+        font-size: 2.4rem;
+      }
+
+      span {
+        font-size: 1rem;
+      }
+    }
+
+    &__description {
+      margin-top: 2.5rem;
+      text-align: center;
+      order: 2;
+    }
+
+    &__list {
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+      list-style-type: none;
+      order: 3;
+
+      li {
+        padding: 0 1.5rem;
+        text-align: center;
+        font-size: 1rem;
+
+        span {
+          display: block;
+          margin-bottom: 0.1rem;
+          font-weight: bold;
+          font-size: 1.6rem;
+        }
+      }
+    }
+
+    &__description p {
+      margin-bottom: 0.2rem;
+      font-size: 1.2rem;
+    }
+
+    &__button {
+      margin: 3rem 0 2rem;
+      text-align: center;
+      order: 4;
+    }
+  }
+}
+
+
+
+
+

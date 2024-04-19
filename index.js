@@ -1,11 +1,31 @@
-// const
+// khởi tạo const
 const GRID_EMPTY = 0;
 const GRID_FOOD = 1;
 const GRID_SNAKE = 2;
 const GRID_OBSTACLE = 3;
 const GRID_POISON = 4;
-
 const initArraySize = 14;
+const size = 38;
+
+// khởi tạo element
+const newGame = document.querySelector(".ended__button");
+const highLevel = document.querySelector(".success__button");
+const startGame = document.getElementById("start");
+const homeElement = document.querySelector(".home");
+const musicIcon = document.querySelector(".fa-music");
+const volumn = document.querySelector(".fa-volume-high");
+const slashElement = document.querySelector(".slash");
+const levelSelect = document.getElementById('level');
+const scoreElement = document.getElementById("score");
+const aboutElement = document.querySelector(".about");
+const aboutBtn = document.getElementById("about-me");
+const closeAbout = document.getElementById("close");
+
+// khởi tạo audio
+let eatSound = new Audio('assets/eat.wav');
+let homeSound = new Audio('assets/snake.mp3');
+homeSound.loop = true;
+
 let initArray = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -22,7 +42,6 @@ let initArray = [
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 ];
-const size = 38;
 let snake = [
     {
         x: Math.floor(initArraySize / 2) - 1,
@@ -30,7 +49,6 @@ let snake = [
     }
 ];
 let snakeDirection
-let scoreElement = document.getElementById("score")
 let score = 0;
 let isGameOver = false;
 let isGameStarted = false;
@@ -41,17 +59,14 @@ let obstacles = [];
 let poison = { x: 0, y: 0 };
 let foods = [];
 let foodIntervalId;
-// Tạo đối tượng Audio
-let eatSound = new Audio('assets/eat.wav');
 let success = false;
 
-
-const newGame = document.querySelector(".ended__button")
-const highLevel = document.querySelector(".success__button")
-const levelSelect = document.getElementById('level');
-
-// Start the game
+// Bắt đầu game
 window.onload = () => {
+    startGame.addEventListener('click', () => {
+        homeElement.style.display = "none";
+        homeSound.play();
+    })
     if (level >= 3) {
         initObstacles();
     }
@@ -76,27 +91,27 @@ window.onload = () => {
     });
 
     document.addEventListener('keydown', (event) => {
-        if (isGameOver) return; // Don't do anything if game is over
+        if (isGameOver) return;
+        // lv 5 và 6 thì sẽ đảo ngược điều khiển
         if (level !== 5 && level !== 6) {
             if (event.code === 'ArrowLeft' && snakeDirection !== 'RIGHT') newDirection = 'LEFT';
             else if (event.code === 'ArrowUp' && snakeDirection !== 'DOWN') newDirection = 'UP';
             else if (event.code === 'ArrowRight' && snakeDirection !== 'LEFT') newDirection = 'RIGHT';
             else if (event.code === 'ArrowDown' && snakeDirection !== 'UP') newDirection = 'DOWN';
         } else {
-            // Reverse the controls for level 5
             if (event.code === 'ArrowRight' && snakeDirection !== 'LEFT') newDirection = 'LEFT';
             else if (event.code === 'ArrowDown' && snakeDirection !== 'UP') newDirection = 'UP';
             else if (event.code === 'ArrowLeft' && snakeDirection !== 'RIGHT') newDirection = 'RIGHT';
             else if (event.code === 'ArrowUp' && snakeDirection !== 'DOWN') newDirection = 'DOWN';
         }
 
-        // If a new direction was successfully determined and the game is not yet started:
+        // nếu có hướng mới và game chưa bắt đầu thì bắt đầu game
         if (newDirection && !isGameStarted) {
-            snakeDirection = newDirection; // Set the new direction
-            isGameStarted = true; // Set the flag to true, indicating the game has started
-            gameLoop(); // Start the game loop
+            snakeDirection = newDirection;
+            isGameStarted = true;
+            gameLoop();
         } else if (newDirection) {
-            snakeDirection = newDirection; // Only update the direction if valid
+            snakeDirection = newDirection;
         }
     });
     newGame.addEventListener('click', () => {
@@ -106,7 +121,42 @@ window.onload = () => {
     highLevel.addEventListener('click', () => {
         restart()
     })
+
+    musicIcon.addEventListener('click', playHomeSound)
+    slashElement.addEventListener('click', playHomeSound)
+
+    volumn.addEventListener('click', () => {
+        if (eatSound.muted) {
+            eatSound.muted = false;
+            volumn.classList.add("fa-volume-high")
+            volumn.classList.remove("fa-volume-mute")
+        } else {
+            eatSound.muted = true;
+            volumn.classList.add("fa-volume-mute")
+            volumn.classList.remove("fa-volume-high")
+        }
+
+    })
+
+    aboutBtn.addEventListener('click', () => {
+        aboutElement.style.top = "0"
+    })
+
+    closeAbout.addEventListener('click', () => {
+        aboutElement.style.top = "-100%"
+    })
 };
+
+const playHomeSound = () => {
+    if (homeSound.paused) {
+        homeSound.play();
+        slashElement.style.display = "none"
+    } else {
+        homeSound.pause();
+        slashElement.style.display = "block"
+
+    }
+}
 
 const gameLoop = () => {
     if (!isGameOver && updateSnakePosition()) {
@@ -123,30 +173,27 @@ const gameLoop = () => {
             clearInterval(foodIntervalId);
             foodIntervalId = null;
         }
-        // If the game is over, reset isGameStarted so the game can be restarted
+        // nêu game over thì reset lại game
         isGameStarted = false;
         levelSelect.disabled = false
     }
 };
 
-// Clear board and render each time, this avoids memory leak and ensures updated view.
+// xóa bảng và render lại mỗi lần mình update đảm bảo cập nhật view.
 const render = () => {
-    console.log(snakeDirection)
-    // Clear the game board
+    // đầu tiên clear all
     initArray = initArray.map(() => Array(initArraySize).fill(0));
-    // render obstacles
+
     obstacles.forEach(part => {
         const { x, y } = part;
         initArray[x][y] = GRID_OBSTACLE;
     });
 
-    // Render the foods
     foods.forEach(part => {
         const { x, y } = part;
         initArray[x][y] = GRID_FOOD;
     });
 
-    // Render the snake
     snake.forEach(part => {
         const { x, y } = part;
         initArray[x][y] = GRID_SNAKE;
@@ -154,13 +201,9 @@ const render = () => {
 
 
     const board = document.getElementById('board');
-    // Ensure the border size is factored in correctly once, outside the loop.
-    const borderSize = 0; // Example border size, update as needed.
+    const borderSize = 1;
     board.style.height = `${initArray.length * size + borderSize}px`;
     board.style.width = `${initArray[0].length * size + borderSize}px`;
-
-    // Clear the board to avoid duplication of cells.
-    board.innerHTML = '';
 
     initArray.forEach((row, indexRow) => {
         row.forEach((cell, indexCol) => {
@@ -180,14 +223,30 @@ const render = () => {
             } else if (cell === GRID_SNAKE) {
                 cellElement.classList.add('snake');
             }
-            cellElement.style.cssText = `
+
+        cellElement.style.cssText = `
         position: absolute;  
         width: ${size + 1}px;  
         height: ${size + 1}px;  
         top: ${indexRow * size}px;  
         left: ${indexCol * size}px;  
         background-color: ${color};
-        `
+        `;
+        if (level === 2 || level === 6) {
+            const border = '2px solid red';
+            if (indexRow === 0) {
+                cellElement.style.borderTop = border;
+            }
+            if (indexRow === initArray.length - 1) {
+                cellElement.style.borderBottom = border;
+            }
+            if (indexCol === 0) {
+                cellElement.style.borderLeft = border;
+            }
+            if (indexCol === row.length - 1) {
+                cellElement.style.borderRight = border;
+            }
+        }
         board.appendChild(cellElement);
         });
     });
@@ -199,43 +258,41 @@ const updateSnakePosition = () => {
     switch (snakeDirection) {
         case 'RIGHT':
             head.y += 1;
-            if (head.y >= initArraySize) head.y = (level === 2) ? initArraySize - 1 : 0;
+            if (head.y >= initArraySize && (level !== 2 && level !== 6)) head.y = 0;
             break;
         case 'LEFT':
             head.y -= 1;
-            if (head.y < 0) head.y = (level === 2) ? 0 : initArraySize - 1;
+            if (head.y < 0 && (level !== 2 && level !== 6)) head.y = initArraySize - 1;
             break;
         case 'UP':
             head.x -= 1;
-            if (head.x < 0) head.x = (level === 2) ? 0 : initArraySize - 1;
+            if (head.x < 0 && (level !== 2 && level !== 6)) head.x = initArraySize - 1;
             break;
         case 'DOWN':
             head.x += 1;
-            if (head.x >= initArraySize) head.x = (level === 2) ? initArraySize - 1 : 0;
+            if (head.x >= initArraySize && (level !== 2 && level !== 6)) head.x = 0;
             break;
         default: break;
     }
 
-    // Check boundaries
-    if (head.x < 0 || head.x >= initArraySize || head.y < 0 || head.y >= initArraySize) {
-        // End the game or reset the game state
+    // Check đụng vào tường
+    if (head.x < 0 || head.x >= initArraySize  || head.y < 0 || head.y >= initArraySize) {
+        console.log("hihi")
         ended('Game Over: Snake hit a wall!')
         return false;
     }
 
-    // Check self-collision
+    // Check đụng bản thân
     for (let i = 0; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
-            // End the game or reset the game state
             ended('Game Over: Snake collided with itself!')
             return false;
         }
     }
 
-    // Check for collision with obstacles
+    // Check đụng vào chướng ngại vật
     for (let i = 0; i < obstacles.length; i++) {
         if (head.x === obstacles[i].x && head.y === obstacles[i].y) {
-            // End the game or reset the game state
             ended('Game Over: Snake hit an obstacle!');
             return false;
         }
@@ -245,19 +302,19 @@ const updateSnakePosition = () => {
     for (let i = 0; i < foods.length; i++) {
         if (head.x === foods[i].x && head.y === foods[i].y) {
             score++;
-            foods.splice(i, 1); // Remove the eaten food
-            createFood(); // Initialize new foods
+            foods.splice(i, 1);
+            createFood();
             ateFood = true;
-            let soundClone = eatSound.cloneNode();
-            soundClone.play();
+            if (!eatSound.muted) {
+                let soundClone = eatSound.cloneNode();
+                soundClone.play();
+            }
             break;
         }
     }
 
-    // Move the snake
     snake.unshift(head);
     if (!ateFood) {
-        // If the snake didn't eat food, remove the tail
         snake.pop();
     }
 
@@ -339,29 +396,29 @@ const restart = () => {
 }
 
 function initObstacles() {
-    for (let i = 0; i < initArray.length; i++) { // Create 5 obstacles
+    for (let i = 0; i < initArray.length; i++) {
         let x, y;
-        if (i === 2 || i === 3 || i === 4) continue; // Skip the first row
+        if (i === 2 || i === 3 || i === 4) continue;
         x = 3;
         y = i;// Ensure an empty position
         obstacles.push({ x, y });
         initArray[x][y] = GRID_OBSTACLE;
     }
 
-    for (let i = 0; i < initArray.length; i++) { // Create 5 obstacles
+    for (let i = 0; i < initArray.length; i++) {
         let x, y;
-        if (i === 11 || i === 12 || i === 13) continue; // Skip the first row
+        if (i === 11 || i === 12 || i === 13) continue;
         x = 8;
         y = i;// Ensure an empty position
         obstacles.push({ x, y });
         initArray[x][y] = GRID_OBSTACLE;
     }
 
-    for (let i = 0; i < initArray.length; i++) { // Create 5 obstacles
+    for (let i = 0; i < initArray.length; i++) {
         let x, y;
-        if (i === 6 || i === 7 || i === 8) continue; // Skip the first row
+        if (i === 6 || i === 7 || i === 8) continue;
         x = 12;
-        y = i;// Ensure an empty position
+        y = i;
         obstacles.push({ x, y });
         initArray[x][y] = GRID_OBSTACLE;
     }
@@ -372,7 +429,7 @@ const initPoison = () => {
     do {
         x = Math.floor(Math.random() * initArraySize);
         y = Math.floor(Math.random() * initArraySize);
-    } while (initArray[x][y] !== GRID_EMPTY);  // Ensure an empty position
+    } while (initArray[x][y] !== GRID_EMPTY);
 
     poison = { x, y };
     initArray[x][y] = GRID_POISON;
@@ -385,7 +442,7 @@ const initFoods = () => {
         do {
             x = Math.floor(Math.random() * initArraySize);
             y = Math.floor(Math.random() * initArraySize);
-        } while (initArray[x][y] !== GRID_EMPTY);  // Ensure an empty position
+        } while (initArray[x][y] !== GRID_EMPTY);
 
         foods.push({ x, y });
         initArray[x][y] = GRID_FOOD;
@@ -398,7 +455,7 @@ const createFood = () => {
     do {
         x = Math.floor(Math.random() * initArraySize);
         y = Math.floor(Math.random() * initArraySize);
-    } while (initArray[x][y] !== GRID_EMPTY);  // Ensure an empty position
+    } while (initArray[x][y] !== GRID_EMPTY);
 
     foods.push({ x, y });
     initArray[x][y] = GRID_FOOD;
