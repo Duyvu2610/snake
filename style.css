@@ -64,6 +64,14 @@ i {
 .wrapper #level:focus {
   outline: 2px solid #007bff;
 }
+.wrapper #back {
+  color: white;
+  position: absolute;
+  font-size: 30px;
+  right: -50px;
+  top: -15px;
+  cursor: pointer;
+}
 
 .ended {
   width: 100vw;
@@ -211,9 +219,10 @@ i {
 .about {
   width: 100vw;
   height: 100vh;
+  scale: 0;
   position: absolute;
   z-index: 100;
-  top: -100%;
+  top: 0;
   transition: all 0.5s ease;
 }
 .about #close {
@@ -229,7 +238,6 @@ i {
   display: flex;
   min-height: 100vh;
   padding-top: 5rem;
-  background: rgba(255, 255, 255, 0.5);
 }
 .profile-page .content {
   display: flex;
@@ -253,14 +261,18 @@ i {
   overflow: hidden;
 }
 .profile-page .content__avatar {
-  width: 12rem;
-  height: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 70px;
+  width: 10rem;
+  height: 10rem;
   position: absolute;
   bottom: 40px;
   left: 50%;
   z-index: 2;
   transform: translate(-50%, 50%);
-  background: #8f6ed5 url("https://image.freepik.com/free-photo/friendly-brunette-looking-camera_23-2147774849.jpg") center center no-repeat;
+  background: #63E6BE center center no-repeat;
   background-size: cover;
   border-radius: 50%;
   box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
@@ -287,9 +299,10 @@ i {
   font-size: 1rem;
 }
 .profile-page .content__description {
-  margin-top: 2.5rem;
+  margin: 2.5rem 0;
   text-align: center;
   order: 2;
+  font-weight: bold;
 }
 .profile-page .content__list {
   display: flex;

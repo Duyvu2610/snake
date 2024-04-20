@@ -20,6 +20,8 @@ const scoreElement = document.getElementById("score");
 const aboutElement = document.querySelector(".about");
 const aboutBtn = document.getElementById("about-me");
 const closeAbout = document.getElementById("close");
+const backElement = document.getElementById("back");
+const pauseElement = document.getElementById("pause");
 
 // khởi tạo audio
 let eatSound = new Audio('assets/eat.wav');
@@ -60,6 +62,7 @@ let poison = { x: 0, y: 0 };
 let foods = [];
 let foodIntervalId;
 let success = false;
+let isPaused = false;
 
 // Bắt đầu game
 window.onload = () => {
@@ -92,6 +95,7 @@ window.onload = () => {
 
     document.addEventListener('keydown', (event) => {
         if (isGameOver) return;
+        if (isPaused) return;
         // lv 5 và 6 thì sẽ đảo ngược điều khiển
         if (level !== 5 && level !== 6) {
             if (event.code === 'ArrowLeft' && snakeDirection !== 'RIGHT') newDirection = 'LEFT';
@@ -139,12 +143,21 @@ window.onload = () => {
     })
 
     aboutBtn.addEventListener('click', () => {
-        aboutElement.style.top = "0"
+        aboutElement.style.scale = "1"
     })
 
     closeAbout.addEventListener('click', () => {
-        aboutElement.style.top = "-100%"
+        aboutElement.style.scale = "0"
     })
+
+    backElement.addEventListener('click', () => {
+        location.reload()
+    })
+    pauseElement.addEventListener('click', () => {
+        isPaused = !isPaused;
+        gameLoop()
+    });
+
 };
 
 const playHomeSound = () => {
@@ -159,7 +172,7 @@ const playHomeSound = () => {
 }
 
 const gameLoop = () => {
-    if (!isGameOver && updateSnakePosition()) {
+    if (!isPaused && !isGameOver && updateSnakePosition()) {
         scoreElement.innerHTML = score;
         render();
         setTimeout(gameLoop, speed);
@@ -167,7 +180,6 @@ const gameLoop = () => {
         if (!foodIntervalId && (level === 4 || level === 6)) {
             foodIntervalId = setInterval(initFoods, 2000);
         }
-
     } else if (isGameOver) {
         if (foodIntervalId) {
             clearInterval(foodIntervalId);
