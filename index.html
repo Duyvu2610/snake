@@ -15,47 +15,53 @@
             <div class="slash">/</div>
             <i class="fa-solid fa-volume-high fa-2xl"></i>
             <i class="fa-solid fa-house" id = "back"></i>
-            <i class="fa-solid fa-circle-pause fa-2xl" style="color: #63E6BE;" id="pause"></i>
+            <i class="fa-solid fa-circle-pause fa-2xl" id="pause"></i>
         </div>
         <div class="score">
-            <span>Score:</span>
+            <span>Điểm:</span>
             <span id = "score">0</span>
             <span>|</span>
-            <label for="level">Level</label>
-            <select id="level" name="level">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-            </select>
+            <span>Cấp độ:</span>
+            <span id = "level-label">0</span>
         </div>
     </div>
     <div class="ended">
         <div class="ended__opacity"></div>
         <div class = "ended__notification">
-            <p class="ended__game-over">Game Over</p>
-            <button class="ended__button">New game</button>
+            <p class="ended__game-over">Trò chơi kết thúc</p>
+            <button class="ended__button">Game mới</button>
         </div>
     </div>
     <div class="success">
         <div class="success__opacity"></div>
         <div class = "success__notification">
-            <p class="success__game-over">Pass</p>
-            <button class="success__button">High level</button>
+            <p class="success__game-over" id="sucess-level">Bạn đã chiến thắng cấp độ</p>
+            <button class="success__button" id="high-level">Cấp độ tiếp theo</button>
+            <button class="success__button" id="back-home">Quay về trang chủ</button>
         </div>
     </div>
     <div class="home">
         <div class="btn-div">
-            <button class="btn" id = "start">Start</button>
-            <button class="btn" id = "about-me">About Me</button>
+            <button class="btn" id = "start">Bắt đầu</button>
+            <button class="btn" id = "about-me">Thông tin bản thân</button>
+            <button class="btn" id = "guide">Hướng dẫn chơi</button>
+            <div class = "level-div">
+                <select id="level" name="level">
+                    <option value="0">Chọn cấp độ</option>
+                    <option value="1">Cấp độ 1</option>
+                    <option value="2">Cấp độ 2</option>
+                    <option value="3">Cấp độ 3</option>
+                    <option value="4">Cấp độ 4</option>
+                    <option value="5">Cấp độ 5</option>
+                    <option value="6">Cấp độ 6</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="about">
         <div class="profile-page">
             <div class="content">
-                <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #63E6BE;" id = "close"></i>
+                <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #ff8fab;" id = "close"></i>
                 <div class="content__cover">
                     <div class="content__avatar">
                         <i class="fa-solid fa-user"></i>
@@ -67,15 +73,47 @@
                     <h1>Trần Thụy Minh Thư</h1>
                 </div>
                 <div class="content__description">
-                    <p>Date of Birth: 06/11/2003</p>
-                    <p>Birthplace: Ben Tre</p>
-                    <p>Student ID: 21130555</p>
-                    <p>Class: DH21DTD</p>
-                    <p>Major: Information Technology</p>
-                    <p>Academic year: 2021-2025</p>
+                    <p>Mã số sinh viên: 21130555</p>
+                    <p>Lớp: DH21DTD</p>
+                    <p>Số điện thoại: 0867439611</p>
+                    <p>Ngày sinh: 06/11/2003</p>
+                    <p>Quê quán: huyện Mỏ Cày Bắc, tỉnh Bến Tre</p>
+                    <p>Tình trạng hôn nhân: Độc thân</p>
+                    <p>Tình trạng sinh sản: Tốt</p>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="guideline">
+        <i class="fa-solid fa-circle-xmark fa-2xl" style="color: #ff8fab;" id = "close-guide"></i>
+        <h3>Hướng dẫn chơi game SNAKE</h3>
+        <p class="document1">1. Cách chơi</p>
+        <p class="document">- Người chơi sử dụng các phím mũi tên trên bàn phím để điều khiển rắn đi ăn thức ăn trên đường đi. </p>
+        <p class="document">- Trò chơi có 6 cấp độ khi người chơi đủ 5 điểm sẽ chiến thắng cấp độ va qua cấp độ tiếp theo.</p>
+        <p class="document">- Tuỳ vào từng cấp độ sẽ có độ khó khác nhau dẫn đến trò chơi kết thúc. </p>
+        <p class="document">- Để bắt đầu chơi game: Người chơi chọn cấp độ muốn chơi và bấm vào button [Bắt đầu]. </p>
+        <p class="document1">2. Các cấp độ của game SNAKE</p>
+        <p class="document2">Cấp độ 1: Cơ bản</p>
+        <p class="document">Rắn có thể đi xuyên tường.
+            Trò chơi sẽ kết thúc khi: Rắn va chạm thân của chính mình.</p>
+        <p class="document2">Cấp độ 2: Tường bao quanh khu vực di chuyển</p>
+        <p class="document">Rắn sẽ không được đi xuyên tường.
+            Trò chơi sẽ kết thúc khi: Rắn đụng vào tường hoặc va chạm vào thân của mình</p>
+        <p class="document2">Cấp độ 3: Chướng ngại vật</p>
+        <p class="document">Sẽ xuất hiện chướng ngại vật trong khu vực rắn di chuyển
+            Trò chơi sẽ kết thúc khi: Rắn đụng vào chướng ngại vật hoặc chạm vào thân của mình</p>
+        <p class="document2">Cấp độ 4: Thức ăn tự động đổi vị trí</p>
+        <p class="document">Thức ăn trong khu vực di chuyển sẽ tự động đổi vị trí sau 3 giây
+            Trò chơi sẽ kết thúc khi: Rắn va chạm vào thân của m</p>
+        <p class="document2">Cấp độ 5: Đảo ngược điều khiển</p>
+        <p class="document">Khi bấm di chuyển sang trái sẽ di chuyển sang phải và ngược lại. Còn khi bấm di chuyển đi lên thì sẽ đi xuống và ngược lại
+            Lưu ý: Rắn va chạm vào thân của mình</p>
+        <p class="document2">Cấp độ 6: Tổng hợp các cấp độ</p>
+        <p class="document">Ở cấp độ này rắn sẽ không được đi xuyên tường và xuất hiện chướng ngại vật trên đường di chuyển, thức ăn sau 3 giây sẽ tự động đổi vị trí
+            cuối cùng là đảo ngược điều khiển
+            Trò chơi sẽ kết thúc khi: Rắn đụng vào tường, chướng ngại vật hoặc va chạm vào thân của mình</p>
+
+
     </div>
 </body>
 <script src="index.js"></script>

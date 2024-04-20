@@ -6,6 +6,8 @@ const GRID_OBSTACLE = 3;
 const GRID_POISON = 4;
 const initArraySize = 14;
 const size = 38;
+const borderSize = 1;
+
 
 // khởi tạo element
 const newGame = document.querySelector(".ended__button");
@@ -22,6 +24,11 @@ const aboutBtn = document.getElementById("about-me");
 const closeAbout = document.getElementById("close");
 const backElement = document.getElementById("back");
 const pauseElement = document.getElementById("pause");
+const board = document.getElementById('board');
+const levelLabel = document.getElementById("level-label");
+const closeGuide = document.getElementById("close-guide");
+const guideElement = document.getElementById("guide");
+
 
 // khởi tạo audio
 let eatSound = new Audio('assets/eat.wav');
@@ -64,6 +71,9 @@ let foodIntervalId;
 let success = false;
 let isPaused = false;
 
+board.style.height = `${initArray.length * size + borderSize}px`;
+board.style.width = `${initArray[0].length * size + borderSize}px`;
+
 // Bắt đầu game
 window.onload = () => {
     startGame.addEventListener('click', () => {
@@ -103,10 +113,10 @@ window.onload = () => {
             else if (event.code === 'ArrowRight' && snakeDirection !== 'LEFT') newDirection = 'RIGHT';
             else if (event.code === 'ArrowDown' && snakeDirection !== 'UP') newDirection = 'DOWN';
         } else {
-            if (event.code === 'ArrowRight' && snakeDirection !== 'LEFT') newDirection = 'LEFT';
-            else if (event.code === 'ArrowDown' && snakeDirection !== 'UP') newDirection = 'UP';
-            else if (event.code === 'ArrowLeft' && snakeDirection !== 'RIGHT') newDirection = 'RIGHT';
-            else if (event.code === 'ArrowUp' && snakeDirection !== 'DOWN') newDirection = 'DOWN';
+            if (event.code === 'ArrowRight' && snakeDirection !== 'RIGHT') newDirection = 'LEFT';
+            else if (event.code === 'ArrowDown' && snakeDirection !== 'DOWN') newDirection = 'UP';
+            else if (event.code === 'ArrowLeft' && snakeDirection !== 'LEFT') newDirection = 'RIGHT';
+            else if (event.code === 'ArrowUp' && snakeDirection !== 'UP') newDirection = 'DOWN';
         }
 
         // nếu có hướng mới và game chưa bắt đầu thì bắt đầu game
@@ -154,9 +164,27 @@ window.onload = () => {
         location.reload()
     })
     pauseElement.addEventListener('click', () => {
-        isPaused = !isPaused;
-        gameLoop()
+        if (isPaused) {
+            pauseElement.classList.remove("fa-circle-play")
+            pauseElement.classList.add("fa-circle-pause")
+        } else {
+            pauseElement.classList.add("fa-circle-play")
+            pauseElement.classList.remove("fa-circle-pause")
+        }
+            isPaused = !isPaused;
+            gameLoop()
     });
+
+    closeGuide.addEventListener('click', () => {
+        const guideElement = document.querySelector(".guideline");
+        guideElement.style.scale = "0"
+    })
+
+    guideElement.addEventListener('click', () => {
+        const guideElement = document.querySelector(".guideline");
+        guideElement.style.scale = "1"
+
+    })
 
 };
 
@@ -193,8 +221,13 @@ const gameLoop = () => {
 
 // xóa bảng và render lại mỗi lần mình update đảm bảo cập nhật view.
 const render = () => {
+    while (board.firstChild) {
+        board.removeChild(board.firstChild);
+    }
     // đầu tiên clear all
     initArray = initArray.map(() => Array(initArraySize).fill(0));
+
+    levelLabel.innerHTML = level
 
     obstacles.forEach(part => {
         const { x, y } = part;
@@ -211,12 +244,6 @@ const render = () => {
         initArray[x][y] = GRID_SNAKE;
     });
 
-
-    const board = document.getElementById('board');
-    const borderSize = 1;
-    board.style.height = `${initArray.length * size + borderSize}px`;
-    board.style.width = `${initArray[0].length * size + borderSize}px`;
-
     initArray.forEach((row, indexRow) => {
         row.forEach((cell, indexCol) => {
             const cellElement = document.createElement('div');
@@ -226,9 +253,9 @@ const render = () => {
             } else if (cell === GRID_POISON) {
                 color = '#2a218a'
             } else if (indexRow % 2 === indexCol % 2) {
-                color = '#aad751'
+                color = '#ffc2d1'
             } else {
-                color = '#a2d149'
+                color = '#ffe5ec'
             }
             if (cell === GRID_FOOD) {
                 cellElement.classList.add('food');
@@ -289,15 +316,14 @@ const updateSnakePosition = () => {
 
     // Check đụng vào tường
     if (head.x < 0 || head.x >= initArraySize  || head.y < 0 || head.y >= initArraySize) {
-        console.log("hihi")
-        ended('Game Over: Snake hit a wall!')
+        ended('Thất bại: rắn đã đụng phải tường!')
         return false;
     }
 
     // Check đụng bản thân
     for (let i = 0; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
-            ended('Game Over: Snake collided with itself!')
+            ended('Thất bại: rắn đã đụng phải bản thân!')
             return false;
         }
     }
@@ -305,7 +331,7 @@ const updateSnakePosition = () => {
     // Check đụng vào chướng ngại vật
     for (let i = 0; i < obstacles.length; i++) {
         if (head.x === obstacles[i].x && head.y === obstacles[i].y) {
-            ended('Game Over: Snake hit an obstacle!');
+            ended('Thất bại: rắn đã đụng phải chướng ngại vật!');
             return false;
         }
     }
@@ -318,8 +344,8 @@ const updateSnakePosition = () => {
             createFood();
             ateFood = true;
             if (!eatSound.muted) {
-                let soundClone = eatSound.cloneNode();
-                soundClone.play();
+                eatSound.play();
+                eatSound.currentTime = 0;
             }
             break;
         }
@@ -330,8 +356,8 @@ const updateSnakePosition = () => {
         snake.pop();
     }
 
-    if (score >= 10) {
-        successPass('You win!')
+    if (score >= 5) {
+        successPass('Bạn đã chiến thắng trò chơi!')
         success = true
     }
 
@@ -361,7 +387,18 @@ const successPass = (notification) => {
     const notificationElement = document.querySelector(".success__notification")
     const gameOverElement = document.querySelector(".success__game-over")
 
-    gameOverElement.innerHTML = notification
+    if (level === 6) {
+        const backHome = document.getElementById("back-home");
+        const highLevel = document.getElementById("high-level");
+        highLevel.style.display = "none"
+        backHome.style.display = "inline-block"
+        backHome.addEventListener('click', () => {
+            location.reload()
+        })
+        gameOverElement.innerHTML = 'Bạn đã chiến thắng trò chơi!'
+    }else {
+        gameOverElement.innerHTML = `Bạn đã chiến thắng cấp độ ${level}`
+    }
     endedElement.classList.add("success--show")
     notificationElement.classList.add("success__notification--show")
 }
@@ -369,7 +406,7 @@ const successPass = (notification) => {
 
 const restart = () => {
     isGameOver = false;
-
+    clearInterval(foodIntervalId);
     snake = [
         {
             x: Math.floor(initArraySize / 2) - 1,

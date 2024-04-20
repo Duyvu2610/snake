@@ -1,5 +1,5 @@
 // variable
-$primary-color: #578a34;
+$primary-color: #ff8fab;
 // mixin
 @mixin location($x, $y) {
   top: $y;
@@ -9,6 +9,10 @@ $primary-color: #578a34;
 padding: 0;
 margin: 0;
 box-sizing: border-box;
+}
+
+#back-home {
+  display: none;
 }
 
 body {
@@ -55,20 +59,7 @@ i {
     align-items: center;
     gap: 6px;
   }
-  #level {
-    width: 100px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
 
-  #level:hover {
-    border-color: #888;
-  }
-
-  #level:focus {
-    outline: 2px solid #007bff;
-  }
 
   #back {
     color: white;
@@ -78,6 +69,16 @@ i {
     top: -15px;
     cursor: pointer;
   }
+}
+
+#level {
+  width: 200px;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: $primary-color;
+  color: white;
+  font-size: 1.5em;
 }
 
 .ended {
@@ -127,7 +128,7 @@ i {
     padding: 4px 12px;
     border-radius: 4px;
     margin-top: 12px;
-    background-color: #578a34;
+    background-color: $primary-color;
     color: white;
   }
 }
@@ -179,7 +180,7 @@ i {
     padding: 4px 12px;
     border-radius: 4px;
     margin-top: 12px;
-    background-color: #578a34; // Thêm màu nền cho nút tùy chỉnh
+    background-color: $primary-color; // Thêm màu nền cho nút tùy chỉnh
     color: white; // Thêm màu văn bản cho nút tùy chỉnh
   }
 }
@@ -209,6 +210,7 @@ i {
   position: relative;
   z-index: 10;
   .btn-div {
+    min-width: 900px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -216,19 +218,22 @@ i {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    .level-div {
+      display: flex;
+      gap: 10px;
+    }
   }
 
   .btn{
     padding: 10px 20px;
     border-radius: 4px;
-    background-color: #578a34;
+    background-color: $primary-color;
     color: white;
     font-size: 1.5em;
     cursor: pointer;
     margin: 0 10px;
     transition: all .3s ease-in-out;
     &:hover {
-      background-color: #4d7a2b;
       scale: 1.1;
     }
   }
@@ -293,7 +298,7 @@ i {
       left: 50%;
       z-index: 2;
       transform: translate(-50%, 50%);
-      background: #63E6BE center center no-repeat;
+      background: $primary-color center center no-repeat;
       background-size: cover;
       border-radius: 50%;
       box-shadow: 0 15px 35px rgba(50,50,93,0.1), 0 5px 15px rgba(0,0,0,0.07);
@@ -324,10 +329,11 @@ i {
     }
 
     &__description {
+      padding-left: 250px;
       margin: 2.5rem 0;
-      text-align: center;
       order: 2;
       font-weight: bold;
+      text-align: left;
     }
 
     &__list {
@@ -364,6 +370,52 @@ i {
   }
 }
 
+.guideline {
+  padding: 8px 16px;
+  max-width: 800px;
+  transform-origin: center;
+  height: 600px;
+  border: 1px solid #000;
+  border-radius: 4px;
+  background: whitesmoke;
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07);
+  position: absolute;
+  z-index: 100;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease;
+  overflow-y: scroll;
+  scale: 0;
+
+  h3 {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 20px 0;
+    color: $primary-color;
+  }
+
+  .document1 {
+    padding: 16px 0;
+    font-size: 1.2em;
+    line-height: 1.5;
+    font-weight: bold;
+  }
+
+  .document2 {
+    padding: 12px 0;
+    font-size: 1em;
+    line-height: 1.2;
+    font-weight: bold;
+  }
+
+  #close-guide{
+    position: absolute;
+    top: 25px;
+    right: 10px;
+    cursor: pointer;
+  }
+}
 
 
 
